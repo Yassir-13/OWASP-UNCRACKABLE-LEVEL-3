@@ -1,46 +1,4 @@
-================================================================================
-                  WRITE-UP : OWASP UNCRACKABLE LEVEL 3 (MASTG)
-================================================================================
-
-Auteur     : [Ton nom]
-Date       : 12 mai 2026
-Cible      : UnCrackable-Level3.apk (OWASP MASTG)
-Plateforme : Windows + Android Studio Emulator
-Outils     : apktool, jadx, Ghidra, apksigner, zipalign, adb, Python
-
-================================================================================
-                              TABLE DES MATIERES
-================================================================================
-
-1. Objectif du challenge
-2. Reconnaissance initiale
-3. Analyse statique du code Java (JADX)
-4. Decompilation et patching Smali (apktool)
-5. Rebuild, signature et installation de l'APK patche
-6. Analyse de la bibliotheque native (Ghidra)
-7. Extraction et decodage de la cle secrete (XOR)
-8. Validation finale
-9. Conclusion et lecons apprises
-
-
-================================================================================
-                          LISTE DES CAPTURES D'ECRAN
-================================================================================
-
-  [SCR-01] Screenshot_2026-05-12_212244.png  -> Decompilation apktool
-  [SCR-02] Screenshot_2026-05-12_212252.png  -> JADX : analyse de verifyLibs()
-  [SCR-03] 1778621079685_image.png           -> Hex dump de libfoo.so (ELF)
-  [SCR-04] Screenshot_2026-05-12_214001.png  -> Rebuild apktool
-  [SCR-05] Screenshot_2026-05-12_220806.png  -> App patchee : ecran de saisie
-  [SCR-06] Screenshot_2026-05-12_221908.png  -> Ghidra : pseudo-code FUN_001012c0
-  [SCR-07] Screenshot_2026-05-12_222010.png  -> Script xor.py (VS Code)
-  [SCR-08] Screenshot_2026-05-12_222032.png  -> Execution Python : cle trouvee
-  [SCR-09] Screenshot_2026-05-12_222104.png  -> Validation : "Success!"
-
-
-================================================================================
 1. OBJECTIF DU CHALLENGE
-================================================================================
 
 UnCrackable Level 3 est le troisieme et dernier challenge de la serie OWASP
 MASTG (Mobile Application Security Testing Guide). Il combine plusieurs
@@ -57,9 +15,7 @@ L'objectif est de retrouver la chaine secrete attendue par l'application sans
 modifier la logique de verification.
 
 
-================================================================================
 2. RECONNAISSANCE INITIALE
-================================================================================
 
 Telechargement de l'APK depuis le repository officiel OWASP MASTG.
 
@@ -80,9 +36,7 @@ Activite princ. : sg.vantagepoint.uncrackable3.MainActivity
        (signature 7F 45 4C 46 = ".ELF").
 
 
-================================================================================
 3. ANALYSE STATIQUE DU CODE JAVA (JADX)
-================================================================================
 
 [VOIR SCR-02 : Screenshot_2026-05-12_212252.png]
    --> Vue JADX-GUI de la methode verifyLibs() dans MainActivity.
@@ -120,9 +74,7 @@ Observation cle : la logique de comparaison finale n'est PAS en Java. Elle est
 deleguee a la fonction native check_code dans libfoo.so.
 
 
-================================================================================
 4. DECOMPILATION ET PATCHING SMALI (APKTOOL)
-================================================================================
 
 4.1 Decompilation
 -----------------
@@ -168,9 +120,7 @@ tampering) :
     new-instance v0, Lsg/vantagepoint/uncrackable3/CodeCheck;
 
 
-================================================================================
 5. REBUILD, SIGNATURE ET INSTALLATION DE L'APK PATCHE
-================================================================================
 
 5.1 Rebuild
 -----------
@@ -212,9 +162,7 @@ tampering) :
        String". Patch valide.
 
 
-================================================================================
 6. ANALYSE DE LA BIBLIOTHEQUE NATIVE (GHIDRA)
-================================================================================
 
 6.1 Extraction de libfoo.so
 ----------------------------
@@ -271,9 +219,7 @@ Code utile a la fin de la fonction (capture SCR-06) :
     "pizzapizzapizzapizzapizz").
 
 
-================================================================================
 7. EXTRACTION ET DECODAGE DE LA CLE SECRETE (XOR)
-================================================================================
 
 7.1 Conversion little-endian
 -----------------------------
@@ -310,29 +256,10 @@ Fichier : xor.py
    --> Sortie CMD confirmant le decodage : "making owasp great again".
 
 
-================================================================================
 8. VALIDATION FINALE
-================================================================================
 
-8.1 Saisie dans l'application
-------------------------------
-  - Ouverture de UnCrackable Level 3 (version patchee)
-  - Saisie dans le champ : making owasp great again
-  - Clic sur VERIFY
-
-8.2 Resultat
--------------
 [VOIR SCR-09 : Screenshot_2026-05-12_222104.png]
-   --> Capture finale montrant la boite de dialogue :
-
-  +--------------------------------------+
-  |  Success!                            |
-  |  This is the correct secret.         |
-  |                                      |
-  |                            [ OK ]    |
-  +--------------------------------------+
-
-CHALLENGE RESOLU.
+   
 
 
 9. CONCLUSION ET LECONS APPRISES
