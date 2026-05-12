@@ -34,7 +34,7 @@ resources.arsc
 | **Package** | `sg.vantagepoint.uncrackable3` |
 | **Activité principale** | `sg.vantagepoint.uncrackable3.MainActivity` |
 
-![Hex dump de libfoo.so confirmant la signature ELF](Screenshot 2026-05-12 222411.png)
+![Hex dump de libfoo.so confirmant la signature ELF](Screenshot_2026-05-12_222411.png)
 
 > Hex dump confirmant que `libfoo.so` est bien un binaire **ELF 64-bit** (signature `7F 45 4C 46` = `.ELF`).
 
@@ -42,7 +42,7 @@ resources.arsc
 
 ## 3. Analyse statique du code Java (JADX)
 
-![Vue JADX-GUI de la méthode verifyLibs](Screenshot 2026-05-12 212252.png)
+![Vue JADX-GUI de la méthode verifyLibs](Screenshot_2026-05-12_212252.png)
 
 > Vue JADX-GUI de la méthode `verifyLibs()` dans `MainActivity`.
 
@@ -170,7 +170,7 @@ adb uninstall sg.vantagepoint.uncrackable3
 adb install UnCrackable-Level3-signed.apk
 ```
 
-![App patchée : écran de saisie](Screenshot 2026-05-12 220806.png)
+![App patchée : écran de saisie](Screenshot_2026-05-12_220806.png)
 
 > L'application patchée démarre sans déclencher la boîte *"Rooting or tampering detected"* et affiche directement l'écran *"Enter the Secret String"*. **Patch validé.**
 
@@ -209,7 +209,7 @@ Celle-ci appelle à son tour la fonction interne `FUN_001012c0` (nom auto-géné
 
 ### 6.4 Analyse du pseudo-code de `FUN_001012c0`
 
-![Ghidra : pseudo-code de FUN_001012c0](Screenshot 2026-05-12 221908.png)
+![Ghidra : pseudo-code de FUN_001012c0](Screenshot_2026-05-12_221908.png)
 
 > Pseudo-code décompilé par Ghidra montrant la fin de la fonction.
 
@@ -258,7 +258,7 @@ Les valeurs étant stockées en **little-endian** sur x86_64, on inverse l'ordre
 
 ### 7.2 Script Python de décodage
 
-![Code source du script xor.py dans VS Code](Screenshot 2026-05-12 222010.png)
+![Code source du script xor.py dans VS Code](Screenshot_2026-05-12_222010.png)
 
 > Code source du script `xor.py` dans VS Code (5 lignes).
 
@@ -279,7 +279,7 @@ cd Desktop
 python xor.py
 ```
 
-![Sortie CMD : Clé secrète trouvée](Screenshot 2026-05-12 222032.png)
+![Sortie CMD : Clé secrète trouvée](Screenshot_2026-05-12_222032.png)
 
 > Sortie CMD confirmant le décodage : **`making owasp great again`**.
 
@@ -293,7 +293,7 @@ python xor.py
 - Saisie dans le champ : `making owasp great again`
 - Clic sur **VERIFY**
 
-![Validation : dialogue Success!](Screenshot 2026-05-12 222104.png)
+![Validation : dialogue Success!](Screenshot_2026-05-12_222104.png)
 
 > Capture finale montrant la boîte de dialogue **"Success! This is the correct secret."**
 
@@ -329,5 +329,3 @@ Toute la logique de vérification se réduit, *in fine*, à un `memcmp` entre :
 Récupérer la constante revient donc à inverser **l'unique opération réelle**. Le reste du code natif (obfuscation, listes chaînées, LCG) n'a pas d'incidence sur le résultat et peut être ignoré une fois la fin de la fonction repérée.
 
 ---
-
-**— FIN —**
